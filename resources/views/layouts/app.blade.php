@@ -26,13 +26,13 @@
             <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-30 w-64 px-4 py-6 overflow-y-auto transition duration-300 transform bg-white border-r border-gray-200 md:relative md:translate-x-0 flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-center mb-8">
-                        <a href="{{ route('dashboard') }}" class="block">
+                        <a href="{{ route('dashboard') }}" wire:navigate.hover class="block">
                             <img src="{{ asset('images/logo.png') }}" alt="ReportIt Logo" class="h-20 w-auto drop-shadow-sm">
                         </a>
                     </div>
 
                     <nav class="space-y-2">
-                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('dashboard') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} rounded-xl transition-colors">
+                        <a href="{{ route('dashboard') }}" wire:navigate.hover class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('dashboard') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} rounded-xl transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                             <span class="font-medium">Dashboard</span>
                         </a>
@@ -40,7 +40,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                             <span class="font-medium">My Requests</span>
                         </a>
-                        <a href="{{ route('requests.create') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('requests.create') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} rounded-xl transition-colors">
+                        <a href="{{ route('requests.create') }}" wire:navigate.hover class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('requests.create') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} rounded-xl transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <span class="font-medium">Submit Request</span>
                         </a>
@@ -51,7 +51,7 @@
                             </div>
                             <span class="px-2 py-0.5 text-xs font-semibold text-blue-600 bg-blue-100 rounded-full">3</span>
                         </a>
-                        <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <a href="{{ route('profile.edit') }}" wire:navigate.hover class="flex items-center gap-3 px-4 py-3 text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                             <span class="font-medium">Profile</span>
                         </a>
