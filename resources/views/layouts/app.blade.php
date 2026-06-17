@@ -13,9 +13,8 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        
-        <!-- Alpine.js for interactive elements like dropdowns -->
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        @livewireStyles
+
     </head>
     <body class="font-sans antialiased text-gray-900 bg-[#F9FAFB]">
         <div class="flex h-screen overflow-hidden" x-data="{ sidebarOpen: false }">
@@ -33,7 +32,7 @@
                     </div>
 
                     <nav class="space-y-2">
-                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-white bg-blue-600 rounded-xl transition-colors">
+                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('dashboard') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} rounded-xl transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                             <span class="font-medium">Dashboard</span>
                         </a>
@@ -41,7 +40,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                             <span class="font-medium">My Requests</span>
                         </a>
-                        <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-600 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        <a href="{{ route('requests.create') }}" class="flex items-center gap-3 px-4 py-3 {{ request()->routeIs('requests.create') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} rounded-xl transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <span class="font-medium">Submit Request</span>
                         </a>
@@ -115,5 +114,6 @@
                 </main>
             </div>
         </div>
+        @livewireScripts
     </body>
 </html>
