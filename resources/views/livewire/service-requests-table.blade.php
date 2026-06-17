@@ -11,7 +11,7 @@ new class extends Component
     public $statusFilter = '';
     public ?ServiceRequest $selectedRequest = null;
 
-    public function updatingStatusFilter()
+    public function updatedStatusFilter()
     {
         $this->resetPage();
     }
@@ -60,16 +60,13 @@ new class extends Component
 
     <div class="flex flex-col sm:flex-row items-center justify-between p-6 border-b border-gray-100 gap-4">
         <h3 class="text-lg font-bold text-gray-900">My Requests</h3>
-        <div class="relative">
-            <select wire:model.live="statusFilter" class="appearance-none bg-white border border-gray-200 text-gray-700 py-2 pl-4 pr-10 rounded-lg leading-tight focus:outline-none focus:border-blue-500 font-medium text-sm">
+        <div>
+            <select wire:model.live="statusFilter" class="bg-white border border-gray-200 text-gray-700 py-2 pl-4 pr-8 rounded-lg leading-tight focus:outline-none focus:border-blue-500 font-medium text-sm cursor-pointer hover:border-gray-300 transition-colors">
                 <option value="">All Status</option>
                 <option value="pending">Pending</option>
                 <option value="in_progress">In Progress</option>
                 <option value="resolved">Resolved</option>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
-                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-            </div>
         </div>
     </div>
 
