@@ -22,6 +22,20 @@ new class extends Component
         $this->dispatch('open-modal', 'view-details');
     }
 
+    public function deleteRequest($id)
+    {
+        $request = auth()->user()->serviceRequests()->with('images')->find($id);
+
+        if ($request && $request->status->value === 'pending') {
+            // Delete associated images from storage
+            foreach ($request->images as $image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
+            }
+            $request->delete();
+            session()->flash('success', 'Request deleted successfully.');
+        }
+    }
+
     public function with(): array
     {
         $query = auth()->user()->serviceRequests()->latest();
@@ -37,7 +51,13 @@ new class extends Component
 };
 ?>
 
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
+    @if (session()->has('success'))
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show" x-transition.duration.500ms class="absolute top-4 right-4 z-10 p-4 text-sm text-green-800 rounded-lg bg-green-50 border border-green-200 shadow-lg">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="flex flex-col sm:flex-row items-center justify-between p-6 border-b border-gray-100 gap-4">
         <h3 class="text-lg font-bold text-gray-900">My Requests</h3>
         <div class="relative">
@@ -105,6 +125,11 @@ new class extends Component
                     <td class="p-4 pr-6 text-center">
                         <div class="flex items-center justify-center gap-2">
                             <button wire:click="viewDetails({{ $request->id }})" class="px-3 py-1.5 text-xs font-semibold text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors">View Details</button>
+                            
+                            @if($request->status->value === 'pending')
+                                <a href="{{ route('requests.edit', $request->id) }}" wire:navigate.hover class="px-3 py-1.5 text-xs font-semibold text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">Edit</a>
+                                <button wire:click="deleteRequest({{ $request->id }})" wire:confirm="Are you sure you want to delete this request?" class="px-3 py-1.5 text-xs font-semibold text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition-colors">Delete</button>
+                            @endif
                         </div>
                     </td>
                 </tr>

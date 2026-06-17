@@ -16,6 +16,13 @@ Route::middleware('auth')->group(function () {
         return view('requests.create');
     })->name('requests.create');
 
+    Route::get('/requests/{serviceRequest}/edit', function (\App\Models\ServiceRequest $serviceRequest) {
+        if ($serviceRequest->user_id !== auth()->id() || $serviceRequest->status->value !== 'pending') {
+            abort(403, 'Unauthorized action.');
+        }
+        return view('requests.edit', compact('serviceRequest'));
+    })->name('requests.edit');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
