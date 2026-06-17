@@ -18,7 +18,7 @@ new class extends Component
 
     public function viewDetails($id)
     {
-        $this->selectedRequest = auth()->user()->serviceRequests()->find($id);
+        $this->selectedRequest = auth()->user()->serviceRequests()->with('images')->find($id);
         $this->dispatch('open-modal', 'view-details');
     }
 
@@ -166,11 +166,22 @@ new class extends Component
                     </div>
                 </div>
                 
-                <!-- Image Placeholder -->
-                <div class="w-full h-48 bg-gray-50/80 rounded-xl flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-200">
-                    <svg class="w-10 h-10 mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    <span class="text-sm font-medium text-gray-500">No image attached</span>
-                </div>
+                <!-- Images -->
+                @if($selectedRequest->images->count() > 0)
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        @foreach($selectedRequest->images as $image)
+                            <a href="{{ Storage::url($image->image_path) }}" target="_blank" class="block relative rounded-xl overflow-hidden border border-gray-200 aspect-video shadow-sm hover:opacity-90 transition-opacity">
+                                <img src="{{ Storage::url($image->image_path) }}" alt="Request Image" class="w-full h-full object-cover bg-gray-100">
+                            </a>
+                        @endforeach
+                    </div>
+                @else
+                    <!-- Image Placeholder -->
+                    <div class="w-full h-32 bg-gray-50/80 rounded-xl flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-200">
+                        <svg class="w-8 h-8 mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <span class="text-sm font-medium text-gray-500">No images attached</span>
+                    </div>
+                @endif
 
                 <!-- Description -->
                 <div>

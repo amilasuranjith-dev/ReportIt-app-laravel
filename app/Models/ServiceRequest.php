@@ -29,4 +29,9 @@ class ServiceRequest extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(RequestImage::class);
+    }
 }

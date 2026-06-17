@@ -8,7 +8,7 @@ use App\Enums\RequestStatus;
 
 class ServiceRequestService
 {
-    public function createServiceRequest(User $user, array $data): ServiceRequest
+    public function createServiceRequest(User $user, array $data, array $images = []): ServiceRequest
     {
         $serviceRequest = $user->serviceRequests()->create([
             'title' => $data['title'],
@@ -17,6 +17,16 @@ class ServiceRequestService
             'location' => $data['location'] ?? null,
             'status' => RequestStatus::PENDING,
         ]);
+
+        if (!empty($images)) {
+            foreach ($images as $image) {
+                $path = $image->store('service-requests', 'public');
+                $serviceRequest->images()->create([
+                    'image_path' => $path,
+                    'original_filename' => $image->getClientOriginalName(),
+                ]);
+            }
+        }
 
         return $serviceRequest;
     }
