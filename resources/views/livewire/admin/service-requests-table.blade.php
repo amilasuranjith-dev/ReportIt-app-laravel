@@ -155,7 +155,7 @@ new class extends Component
                     <td class="p-4 pr-6 text-center">
                         <div class="flex items-center justify-center gap-2">
                             <button wire:click="viewDetails({{ $request->id }})" class="px-3 py-1.5 text-xs font-semibold text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors">View Details</button>
-                            <button wire:click="manageRequest({{ $request->id }})" class="px-3 py-1.5 text-xs font-bold text-white bg-indigo-600 border border-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm">Manage</button>
+                            <button wire:click="manageRequest({{ $request->id }})" class="px-3 py-1.5 text-xs font-bold text-white bg-blue-600 border border-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Manage</button>
                             <button wire:click="deleteRequest({{ $request->id }})" wire:confirm="Are you sure you want to mark this request as SPAM and delete it?" class="px-2 py-1.5 text-xs font-bold text-red-600 border border-red-200 rounded-lg hover:bg-red-50 hover:text-red-700 transition-colors shadow-sm" title="Mark as Spam & Delete">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                             </button>
@@ -198,12 +198,12 @@ new class extends Component
                 <!-- User Details -->
                 <div class="bg-indigo-50/50 rounded-xl p-4 border border-indigo-100 flex items-center justify-between">
                     <div>
-                        <p class="text-xs font-semibold text-indigo-800 uppercase tracking-wider mb-1">Reported By</p>
+                        <p class="text-xs font-semibold text-blue-800 uppercase tracking-wider mb-1">Reported By</p>
                         <p class="text-sm font-bold text-gray-900">{{ $selectedRequest->user->name }}</p>
                         <p class="text-xs text-gray-500">{{ $selectedRequest->user->email }}</p>
                     </div>
                     <div class="text-right">
-                        <p class="text-xs font-semibold text-indigo-800 uppercase tracking-wider mb-1">Date</p>
+                        <p class="text-xs font-semibold text-blue-800 uppercase tracking-wider mb-1">Date</p>
                         <p class="text-sm font-bold text-gray-900">{{ $selectedRequest->created_at->format('M d, Y') }}</p>
                         <p class="text-xs text-gray-500">{{ $selectedRequest->created_at->format('h:i A') }}</p>
                     </div>
@@ -268,7 +268,7 @@ new class extends Component
                     <form wire:submit="saveManagement" class="space-y-4 bg-white">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Update Status</label>
-                            <select wire:model="editingStatus" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                            <select wire:model="editingStatus" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                                 <option value="pending">Pending Review</option>
                                 <option value="in_progress">In Progress</option>
                                 <option value="resolved">Resolved</option>
@@ -279,14 +279,14 @@ new class extends Component
                         
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Official Notes / Feedback</label>
-                            <textarea wire:model="adminNotes" rows="3" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="Add resolution details or updates for the citizen..."></textarea>
+                            <textarea wire:model="adminNotes" rows="3" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" placeholder="Add resolution details or updates for the citizen..."></textarea>
                             <p class="mt-1 text-xs text-gray-500">These notes will be directly visible to the citizen who submitted the request.</p>
                             @error('adminNotes') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="flex justify-end gap-3 pt-4">
                             <button type="button" x-on:click="$dispatch('close')" class="px-5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50 shadow-sm">Cancel</button>
-                            <button type="submit" class="px-5 py-2.5 bg-indigo-600 border border-transparent rounded-lg text-sm font-semibold text-white hover:bg-indigo-700 shadow-sm flex items-center gap-2">
+                            <button type="submit" class="px-5 py-2.5 bg-blue-600 border border-transparent rounded-lg text-sm font-semibold text-white hover:bg-blue-700 shadow-sm flex items-center gap-2">
                                 <svg wire:loading wire:target="saveManagement" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                                 Save Changes
                             </button>
