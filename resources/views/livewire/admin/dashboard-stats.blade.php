@@ -12,7 +12,7 @@ new class extends Component
 };
 ?>
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
     <!-- Total Requests -->
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-5">
         <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
@@ -43,7 +43,7 @@ new class extends Component
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
         </div>
         <div>
-            <h3 class="text-3xl font-bold text-gray-900">{{ $inProgress }}</h3>
+            <h3 class="text-3xl font-bold text-gray-900">{{ $in_progress }}</h3>
             <p class="text-sm font-semibold text-gray-900">In Progress</p>
             <p class="text-xs text-gray-400 mt-0.5">Being worked on</p>
         </div>
@@ -58,6 +58,18 @@ new class extends Component
             <h3 class="text-3xl font-bold text-gray-900">{{ $resolved }}</h3>
             <p class="text-sm font-semibold text-gray-900">Resolved</p>
             <p class="text-xs text-gray-400 mt-0.5">Successfully resolved</p>
+        </div>
+    </div>
+
+    <!-- Rejected -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-5">
+        <div class="w-14 h-14 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <div>
+            <h3 class="text-3xl font-bold text-gray-900">{{ $rejected }}</h3>
+            <p class="text-sm font-semibold text-gray-900">Rejected</p>
+            <p class="text-xs text-gray-400 mt-0.5">Invalid requests</p>
         </div>
     </div>
 </div>

@@ -44,7 +44,7 @@ new class extends Component
     public function saveManagement(ServiceRequestService $service)
     {
         $this->validate([
-            'editingStatus' => 'required|in:pending,in_progress,resolved',
+            'editingStatus' => 'required|in:pending,in_progress,resolved,rejected',
             'adminNotes' => 'nullable|string|max:1000',
         ]);
 
@@ -52,6 +52,13 @@ new class extends Component
         
         $this->dispatch('close-modal', 'manage-request');
         session()->flash('success', 'Request #'.$this->selectedRequest->id.' updated successfully.');
+    }
+
+    public function deleteRequest($id, ServiceRequestService $service)
+    {
+        $request = ServiceRequest::findOrFail($id);
+        $service->deleteRequest($request);
+        session()->flash('success', 'Spam request deleted successfully.');
     }
 
     public function with(ServiceRequestService $serviceRequestService): array
@@ -85,6 +92,7 @@ new class extends Component
                 <option value="pending">Pending</option>
                 <option value="in_progress">In Progress</option>
                 <option value="resolved">Resolved</option>
+                <option value="rejected">Rejected</option>
             </select>
         </div>
     </div>
@@ -147,6 +155,9 @@ new class extends Component
                         <div class="flex items-center justify-center gap-2">
                             <button wire:click="viewDetails({{ $request->id }})" class="px-3 py-1.5 text-xs font-semibold text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors">View Details</button>
                             <button wire:click="manageRequest({{ $request->id }})" class="px-3 py-1.5 text-xs font-bold text-white bg-indigo-600 border border-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm">Manage</button>
+                            <button wire:click="deleteRequest({{ $request->id }})" wire:confirm="Are you sure you want to mark this request as SPAM and delete it?" class="px-2 py-1.5 text-xs font-bold text-red-600 border border-red-200 rounded-lg hover:bg-red-50 hover:text-red-700 transition-colors shadow-sm" title="Mark as Spam & Delete">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -249,9 +260,10 @@ new class extends Component
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Update Status</label>
                             <select wire:model="editingStatus" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
-                                <option value="pending">Pending</option>
+                                <option value="pending">Pending Review</option>
                                 <option value="in_progress">In Progress</option>
                                 <option value="resolved">Resolved</option>
+                                <option value="rejected">Rejected (Invalid)</option>
                             </select>
                             @error('editingStatus') <span class="text-xs text-red-500">{{ $message }}</span> @enderror
                         </div>
@@ -338,6 +350,18 @@ new class extends Component
                     <h4 class="text-sm font-bold text-gray-900 mb-2">Location Details</h4>
                     <p class="text-gray-700 text-sm pl-6 bg-white border border-gray-100 rounded-lg p-3 shadow-sm">{{ $selectedRequest->location ?? 'Specific location not provided' }}</p>
                 </div>
+
+                <!-- Admin Notes -->
+                @if($selectedRequest->admin_notes)
+                <div class="bg-blue-50/50 rounded-xl p-4 border border-blue-100 relative overflow-hidden shadow-sm mt-4">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+                    <h4 class="text-sm font-bold text-blue-900 flex items-center gap-1.5 mb-2">
+                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Authority Feedback
+                    </h4>
+                    <p class="text-blue-800 text-sm pl-6">{{ $selectedRequest->admin_notes }}</p>
+                </div>
+                @endif
             </div>
 
             <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/80 flex items-center justify-between">

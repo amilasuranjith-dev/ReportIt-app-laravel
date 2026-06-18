@@ -90,8 +90,14 @@ class ServiceRequestService
         return [
             'total' => ServiceRequest::count(),
             'pending' => ServiceRequest::where('status', 'pending')->count(),
-            'inProgress' => ServiceRequest::where('status', 'in_progress')->count(),
+            'in_progress' => ServiceRequest::where('status', 'in_progress')->count(),
             'resolved' => ServiceRequest::where('status', 'resolved')->count(),
+            'rejected' => ServiceRequest::where('status', 'rejected')->count(),
         ];
+    }
+
+    public function deleteRequest(ServiceRequest $serviceRequest): void
+    {
+        $serviceRequest->delete();
     }
 }
