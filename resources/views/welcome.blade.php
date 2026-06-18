@@ -18,9 +18,9 @@
             
             <div class="hidden md:flex items-center gap-8 text-gray-600 font-medium text-sm">
                 <a href="#" class="text-blue-600 font-semibold">Home</a>
-                <a href="#" class="hover:text-gray-900 transition-colors">Features</a>
-                <a href="#" class="hover:text-gray-900 transition-colors">How It Works</a>
-                <a href="#" class="hover:text-gray-900 transition-colors">Contact</a>
+                <a href="#features" class="hover:text-gray-900 transition-colors">Features</a>
+                <a href="#how-it-works" class="hover:text-gray-900 transition-colors">How It Works</a>
+                <a href="#contact" class="hover:text-gray-900 transition-colors">Contact</a>
             </div>
 
             <div class="flex items-center gap-4 text-sm font-medium">
@@ -120,7 +120,7 @@
         </section>
 
         <!-- How It Works Section -->
-        <section class="py-20 bg-[#F9FAFB]">
+        <section id="how-it-works" class="py-20 bg-[#F9FAFB]">
             <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 text-center">
                 <h2 class="text-3xl font-bold text-gray-900 mb-16">How It Works</h2>
                 <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-12 relative">
@@ -158,8 +158,8 @@
             </div>
         </section>
 
-        <!-- Why Use Our Portal -->
-        <section class="py-20">
+        <!-- Why Use Our Portal (Features) -->
+        <section id="features" class="py-20">
             <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
                 <h2 class="text-3xl font-bold text-gray-900 mb-16 text-center">Why Use Our Portal?</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -214,6 +214,24 @@
                 <a href="{{ route('register') }}" class="relative z-10 px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-gray-50 transition-colors shadow-lg w-full md:w-auto text-center">
                     Register Now
                 </a>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-gray-50 border-t border-gray-100">
+            <div class="max-w-3xl mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+                <p class="text-gray-600 mb-8">Have questions or need help? Reach out to our community support team.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-6 text-sm text-gray-700">
+                    <div class="flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        support@reportit.local
+                    </div>
+                    <div class="flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        +94 11 234 5678
+                    </div>
+                </div>
             </div>
         </section>
 
