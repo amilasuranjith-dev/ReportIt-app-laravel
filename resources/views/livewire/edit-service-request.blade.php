@@ -16,6 +16,8 @@ new class extends Component
     public $category;
     public $description;
     public $location;
+    public $latitude;
+    public $longitude;
     public $images = [];
     public $existingImages = [];
 
@@ -26,6 +28,8 @@ new class extends Component
         $this->category = $serviceRequest->category;
         $this->description = $serviceRequest->description;
         $this->location = $serviceRequest->location;
+        $this->latitude = $serviceRequest->latitude;
+        $this->longitude = $serviceRequest->longitude;
         $this->existingImages = $serviceRequest->images;
     }
 
@@ -46,6 +50,8 @@ new class extends Component
             'category' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'location' => 'required|string|max:500',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'images.*' => 'image|max:5120',
         ]);
         
@@ -88,11 +94,20 @@ new class extends Component
             @error('description') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
         </div>
 
-        <!-- Location -->
+        <!-- Location Description -->
         <div>
-            <x-input-label for="location" :value="__('Location Address')" />
-            <x-text-input wire:model="location" id="location" class="block mt-1 w-full" type="text" required />
+            <x-input-label for="location" :value="__('Location Description')" />
+            <x-text-input wire:model="location" id="location" class="block mt-1 w-full" type="text" placeholder="e.g. Near the main junction..." required />
             @error('location') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+        </div>
+
+        <!-- Map for Precise Location -->
+        <div>
+            <x-input-label value="Pinpoint exact location on Map" />
+            <div class="mt-1 relative rounded-md shadow-sm border border-gray-300 overflow-hidden" wire:ignore>
+                <div id="map" style="height: 300px; width: 100%; z-index: 1;"></div>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">Please allow location access. Drag the blue pin to adjust the exact location.</p>
         </div>
 
         <!-- Images -->
@@ -140,9 +155,55 @@ new class extends Component
         </div>
 
         <!-- Submit Button -->
-        <x-primary-button>
-            {{ __('Save Changes') }}
-        </x-primary-button>
-        
+        <div class="flex items-center justify-end">
+            <x-primary-button wire:loading.attr="disabled" class="bg-blue-600 hover:bg-blue-700">
+                <span wire:loading.remove wire:target="updateRequest">{{ __('Save Changes') }}</span>
+                <span wire:loading wire:target="updateRequest">{{ __('Saving...') }}</span>
+            </x-primary-button>
+        </div>
     </form>
+
+    <!-- Leaflet JS Map Logic -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        document.addEventListener('livewire:navigated', () => {
+            // Use existing coordinates if available, else Colombo
+            let existingLat = @js($latitude);
+            let existingLng = @js($longitude);
+            
+            let defaultLat = existingLat ? existingLat : 6.9271;
+            let defaultLng = existingLng ? existingLng : 79.8612;
+            
+            let map = L.map('map').setView([defaultLat, defaultLng], existingLat ? 15 : 13);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            let marker = L.marker([defaultLat, defaultLng], {draggable: true}).addTo(map);
+
+            marker.on('dragend', function (e) {
+                let latlng = marker.getLatLng();
+                @this.set('latitude', latlng.lat);
+                @this.set('longitude', latlng.lng);
+            });
+
+            // Auto-geolocation only if no existing location
+            if (!existingLat && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    let userLat = position.coords.latitude;
+                    let userLng = position.coords.longitude;
+                    
+                    map.setView([userLat, userLng], 15);
+                    marker.setLatLng([userLat, userLng]);
+                    
+                    @this.set('latitude', userLat);
+                    @this.set('longitude', userLng);
+                });
+            }
+        });
+    </script>
 </div>

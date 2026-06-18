@@ -18,6 +18,8 @@ class ServiceRequest extends Model
         'category',
         'description',
         'location',
+        'latitude',
+        'longitude',
         'status',
         'admin_notes',
     ];

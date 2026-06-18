@@ -15,6 +15,8 @@ class ServiceRequestService
             'category' => $data['category'],
             'description' => $data['description'],
             'location' => $data['location'] ?? null,
+            'latitude' => $data['latitude'] ?? null,
+            'longitude' => $data['longitude'] ?? null,
             'status' => RequestStatus::PENDING,
         ]);
 
@@ -38,6 +40,8 @@ class ServiceRequestService
             'category' => $data['category'],
             'description' => $data['description'],
             'location' => $data['location'] ?? null,
+            'latitude' => $data['latitude'] ?? null,
+            'longitude' => $data['longitude'] ?? null,
         ]);
 
         if (!empty($images)) {

@@ -12,6 +12,8 @@ new class extends Component
     public $category;
     public $description;
     public $location;
+    public $latitude;
+    public $longitude;
     public $images = [];
 
     public function saveRequest(ServiceRequestService $service)
@@ -22,15 +24,17 @@ new class extends Component
             'category' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'location' => 'required|string|max:500',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'images.*' => 'image|max:5120',
         ]);
         
         // pass data to service
         $service->createServiceRequest(auth()->user(), $validatedData, $this->images);
 
-        $this->reset();
-
         session()->flash('success', 'Service Request created successfully!');
+        
+        return redirect()->route('dashboard');
     }
 };
 ?>
@@ -70,11 +74,20 @@ new class extends Component
             <textarea wire:model="description" id="description" class="block mt-1 w-full border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm" rows="4" required></textarea>
             @error('description') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
         </div>
-        <!-- Location -->
+        <!-- Location Description -->
         <div>
-            <x-input-label for="location" :value="__('Location Address')" />
-            <x-text-input wire:model="location" id="location" class="block mt-1 w-full" type="text" required />
+            <x-input-label for="location" :value="__('Location Description')" />
+            <x-text-input wire:model="location" id="location" class="block mt-1 w-full" type="text" placeholder="e.g. Near the main junction..." required />
             @error('location') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+        </div>
+
+        <!-- Map for Precise Location -->
+        <div>
+            <x-input-label value="Pinpoint exact location on Map" />
+            <div class="mt-1 relative rounded-md shadow-sm border border-gray-300 overflow-hidden" wire:ignore>
+                <div id="map" style="height: 300px; width: 100%; z-index: 1;"></div>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">Please allow location access. Drag the blue pin to adjust the exact location.</p>
         </div>
 
         <!-- Images -->
@@ -105,9 +118,56 @@ new class extends Component
         </div>
 
         <!-- Submit Button -->
-        <x-primary-button>
-            {{ __('Submit Request') }}
-        </x-primary-button>
-        
+        <div class="flex items-center justify-end">
+            <x-primary-button wire:loading.attr="disabled" class="bg-blue-600 hover:bg-blue-700">
+                <span wire:loading.remove wire:target="saveRequest">{{ __('Submit Request') }}</span>
+                <span wire:loading wire:target="saveRequest">{{ __('Submitting...') }}</span>
+            </x-primary-button>
+        </div>
     </form>
+
+    <!-- Leaflet JS Map Logic -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        document.addEventListener('livewire:navigated', () => {
+            // Default to Colombo, Sri Lanka
+            let defaultLat = 6.9271;
+            let defaultLng = 79.8612;
+            
+            let map = L.map('map').setView([defaultLat, defaultLng], 13);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            // Initialize draggable marker
+            let marker = L.marker([defaultLat, defaultLng], {draggable: true}).addTo(map);
+
+            // Update Livewire component when marker is dragged
+            marker.on('dragend', function (e) {
+                let latlng = marker.getLatLng();
+                @this.set('latitude', latlng.lat);
+                @this.set('longitude', latlng.lng);
+            });
+
+            // Automatically detect user location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    let userLat = position.coords.latitude;
+                    let userLng = position.coords.longitude;
+                    
+                    // Move map and marker to user's location
+                    map.setView([userLat, userLng], 15);
+                    marker.setLatLng([userLat, userLng]);
+                    
+                    // Set Livewire variables
+                    @this.set('latitude', userLat);
+                    @this.set('longitude', userLng);
+                });
+            }
+        });
+    </script>
 </div>
