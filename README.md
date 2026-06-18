@@ -29,16 +29,16 @@
 This project is built using modern web development standards and follows a robust layered architecture.
 
 **Backend & Architecture:**
-- **Framework:** [Laravel 11.x](https://laravel.com) (PHP 8.2+)
+- **Framework:** [Laravel 13.x](https://laravel.com) (PHP 8.3+)
 - **Architecture:** MVC with a dedicated Service Layer (`ServiceRequestService`) for clean business logic.
 - **Database & ORM:** MySQL with Eloquent ORM (including Spatial Data concepts for Coordinates).
 - **Authentication:** Laravel Breeze
 
 **Frontend:**
-- **Reactivity:** [Livewire 3](https://livewire.laravel.com/) (Volt Components) & [Alpine.js](https://alpinejs.dev/)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **Map Integration:** [Leaflet.js](https://leafletjs.com/) (OpenStreetMap)
-- **Asset Bundler:** Vite
+- **Reactivity:** [Livewire 4.x](https://livewire.laravel.com/) (Volt Components) & [Alpine.js 3.x](https://alpinejs.dev/)
+- **Styling:** [Tailwind CSS 3.x](https://tailwindcss.com/)
+- **Map Integration:** [Leaflet.js 1.9](https://leafletjs.com/) (OpenStreetMap)
+- **Asset Bundler:** Vite 8.x
 
 ---
 
@@ -55,7 +55,7 @@ This project is built using modern web development standards and follows a robus
 Follow these steps to set up the project locally:
 
 ### Prerequisites
-- PHP 8.2 or higher
+- PHP 8.3 or higher
 - Composer
 - Node.js & NPM
 - MySQL Database
