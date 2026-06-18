@@ -140,6 +140,7 @@ new class extends Component
                                 'pending' => 'orange',
                                 'in_progress' => 'blue',
                                 'resolved' => 'green',
+                                'rejected' => 'red',
                                 default => 'gray'
                             };
                         @endphp
@@ -308,6 +309,7 @@ new class extends Component
                             'pending' => 'orange',
                             'in_progress' => 'blue',
                             'resolved' => 'green',
+                            'rejected' => 'red',
                             default => 'gray'
                         };
                     @endphp
