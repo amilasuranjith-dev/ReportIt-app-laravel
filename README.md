@@ -1,58 +1,133 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ReportIt - Community Service Reporting App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![ReportIt Logo](public/favicon.ico)
 
-## About Laravel
+**ReportIt** is a modern, responsive web application designed to empower citizens by allowing them to easily report community issues (such as broken street lights, damaged roads, garbage accumulation, etc.) directly to local authorities. Authorities can track, manage, and update the status of these issues in real-time, fostering a cleaner and safer community.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Key Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### For Citizens (Users)
+- **Easy Issue Reporting:** Report issues with a title, category, description, and multiple image uploads.
+- **Interactive Map Pinpointing:** Uses **Leaflet.js** and HTML5 Auto-Geolocation to automatically detect the user's location and allows drag-and-drop map pins for precise issue reporting.
+- **Real-time Tracking:** Track the exact status of submitted requests (`Pending`, `In Progress`, `Resolved`, `Rejected`).
+- **Authority Feedback:** View official notes and feedback provided by admins regarding specific issues.
+- **Personal Dashboard:** A dedicated space to view and filter all past reports.
 
-## Learning Laravel
+### For Authorities (Admins)
+- **Admin Dashboard:** A comprehensive view of all reported issues across the community.
+- **Status Management:** Quickly update the status of an issue to keep citizens informed.
+- **Feedback System:** Add official notes to requests to explain resolutions or rejections.
+- **Google Maps Integration:** Open the exact coordinates of an issue directly in Google Maps with a single click.
+- **Spam Management:** Soft Delete functionality allows admins to reject and remove invalid or spam requests without permanently destroying database integrity.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠️ Technology Stack
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+This project is built using modern web development standards and follows a robust layered architecture.
 
-## Agentic Development
+**Backend & Architecture:**
+- **Framework:** [Laravel 11.x](https://laravel.com) (PHP 8.2+)
+- **Architecture:** MVC with a dedicated Service Layer (`ServiceRequestService`) for clean business logic.
+- **Database & ORM:** MySQL with Eloquent ORM (including Spatial Data concepts for Coordinates).
+- **Authentication:** Laravel Breeze
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+**Frontend:**
+- **Reactivity:** [Livewire 3](https://livewire.laravel.com/) (Volt Components) & [Alpine.js](https://alpinejs.dev/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Map Integration:** [Leaflet.js](https://leafletjs.com/) (OpenStreetMap)
+- **Asset Bundler:** Vite
 
-```bash
-composer require laravel/boost --dev
+---
 
-php artisan boost:install
-```
+## 🏗️ System Architecture Highlights
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+1. **Service Layer Pattern:** Business logic (like saving images and handling coordinates) is abstracted into Service Classes, keeping Livewire components and Controllers extremely thin and clean.
+2. **Event-Driven UI:** The map components communicate with the Livewire backend seamlessly using AJAX, ensuring a smooth Single Page Application (SPA) feel without full page reloads (`wire:navigate`).
+3. **Mass Assignment & Casts:** Strict Eloquent `$fillable` arrays and Enum casting ensure data integrity and prevent security vulnerabilities like SQL injection.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## ⚙️ Installation & Setup
 
-## Code of Conduct
+Follow these steps to set up the project locally:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Prerequisites
+- PHP 8.2 or higher
+- Composer
+- Node.js & NPM
+- MySQL Database
 
-## Security Vulnerabilities
+### Step-by-Step Guide
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/reportit-app.git
+   cd reportit-app
+   ```
 
-## License
+2. **Install PHP dependencies:**
+   ```bash
+   composer install
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+3. **Install Frontend dependencies:**
+   ```bash
+   npm install
+   ```
+
+4. **Environment Setup:**
+   Copy the example environment file and generate an app key:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+5. **Database Configuration:**
+   Create a MySQL database named `reportit_db` (or your choice) and update your `.env` file:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=reportit_db
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+6. **Run Migrations:**
+   ```bash
+   php artisan migrate
+   ```
+
+7. **Storage Link:**
+   Create a symbolic link for uploaded images to be publicly accessible:
+   ```bash
+   php artisan storage:link
+   ```
+
+8. **Run the Application:**
+   You will need two terminal windows to run the frontend builder and backend server simultaneously:
+
+   *Terminal 1 (Vite Dev Server):*
+   ```bash
+   npm run dev
+   ```
+
+   *Terminal 2 (Laravel Server):*
+   ```bash
+   php artisan serve
+   ```
+
+   Access the application at: `http://localhost:8000`
+
+---
+
+## 🔒 Security Vulnerabilities
+
+If you discover a security vulnerability within this project, please report it immediately to the development team. All security vulnerabilities will be promptly addressed.
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
