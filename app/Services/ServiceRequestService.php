@@ -55,13 +55,23 @@ class ServiceRequestService
 
     public function getAllRequests(string $statusFilter = 'all')
     {
-        $query = ServiceRequest::with('user')->latest();
+        $query = ServiceRequest::with('user')->oldest();
 
         if ($statusFilter !== 'all') {
             $query->where('status', $statusFilter);
         }
 
         return $query->paginate(10);
+    }
+
+    public function updateStatusAndNotes(ServiceRequest $serviceRequest, string $status, ?string $adminNotes): ServiceRequest
+    {
+        $serviceRequest->update([
+            'status' => \App\Enums\RequestStatus::from($status),
+            'admin_notes' => $adminNotes,
+        ]);
+
+        return $serviceRequest;
     }
 
     public function getSystemStats(): array
