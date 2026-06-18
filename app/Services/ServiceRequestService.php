@@ -53,12 +53,23 @@ class ServiceRequestService
         return $serviceRequest;
     }
 
-    public function getAllRequests(string $statusFilter = 'all')
+    public function getAllRequests(string $statusFilter = 'all', string $searchQuery = '')
     {
         $query = ServiceRequest::with('user')->oldest();
 
         if ($statusFilter !== 'all') {
             $query->where('status', $statusFilter);
+        }
+
+        if (!empty($searchQuery)) {
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('title', 'like', '%' . $searchQuery . '%')
+                  ->orWhere('id', 'like', '%' . $searchQuery . '%')
+                  ->orWhereHas('user', function($userQuery) use ($searchQuery) {
+                      $userQuery->where('name', 'like', '%' . $searchQuery . '%')
+                                ->orWhere('email', 'like', '%' . $searchQuery . '%');
+                  });
+            });
         }
 
         return $query->paginate(10);
