@@ -52,4 +52,25 @@ class ServiceRequestService
 
         return $serviceRequest;
     }
+
+    public function getAllRequests(string $statusFilter = 'all')
+    {
+        $query = ServiceRequest::with('user')->latest();
+
+        if ($statusFilter !== 'all') {
+            $query->where('status', $statusFilter);
+        }
+
+        return $query->paginate(10);
+    }
+
+    public function getSystemStats(): array
+    {
+        return [
+            'total' => ServiceRequest::count(),
+            'pending' => ServiceRequest::where('status', 'pending')->count(),
+            'inProgress' => ServiceRequest::where('status', 'in_progress')->count(),
+            'resolved' => ServiceRequest::where('status', 'resolved')->count(),
+        ];
+    }
 }

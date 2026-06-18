@@ -26,7 +26,11 @@
             <div class="flex items-center gap-4 text-sm font-medium">
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="px-5 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-md shadow-blue-200">Dashboard</a>
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}" class="px-5 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-md shadow-blue-200">Admin Dashboard</a>
+                        @else
+                            <a href="{{ route('dashboard') }}" class="px-5 py-2.5 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-md shadow-blue-200">Dashboard</a>
+                        @endif
                     @else
                         <a href="{{ route('login') }}" class="px-5 py-2.5 text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">Login</a>
                         @if (Route::has('register'))

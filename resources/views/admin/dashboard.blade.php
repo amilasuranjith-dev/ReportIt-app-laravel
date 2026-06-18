@@ -5,10 +5,11 @@
                 <h3 class="text-xl font-bold text-gray-900">Admin Dashboard</h3>
                 <p class="text-sm text-gray-500 mt-1">Manage all community service requests here.</p>
             </div>
+
+            <livewire:admin.dashboard-stats />
             
             <div class="p-6">
-                <!-- Admin Table Component Will Go Here -->
-                <p class="text-gray-500">Admin Service Requests Table (To be implemented in Slice 2)</p>
+                <livewire:admin.service-requests-table />
             </div>
         </div>
     </div>
