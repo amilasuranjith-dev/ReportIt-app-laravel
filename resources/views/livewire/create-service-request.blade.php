@@ -40,13 +40,11 @@ new class extends Component
 ?>
 
 <div>
-   {{-- සාර්ථකව Save වුනාම පණිවිඩය පෙන්නන තැන --}}
     @if (session()->has('success'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show" x-transition.duration.500ms class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50">
             {{ session('success') }}
         </div>
     @endif
-    {{-- Form එක --}}
     <form wire:submit="saveRequest" class="space-y-6">
         
         <!-- Title -->
