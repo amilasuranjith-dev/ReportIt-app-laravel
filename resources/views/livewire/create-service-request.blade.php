@@ -40,13 +40,11 @@ new class extends Component
 ?>
 
 <div>
-   {{-- සාර්ථකව Save වුනාම පණිවිඩය පෙන්නන තැන --}}
     @if (session()->has('success'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show" x-transition.duration.500ms class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50">
             {{ session('success') }}
         </div>
     @endif
-    {{-- Form එක --}}
     <form wire:submit="saveRequest" class="space-y-6">
         
         <!-- Title -->
@@ -143,8 +141,14 @@ new class extends Component
                 attribution: '© OpenStreetMap'
             }).addTo(map);
 
-            // Initialize draggable marker
-            let marker = L.marker([defaultLat, defaultLng], {draggable: true}).addTo(map);
+            // Initialize draggable marker with inline SVG icon (avoids broken PNGs on mobile/retina)
+            let pinIcon = L.divIcon({
+                className: 'custom-leaflet-pin',
+                html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="28" height="42"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z" fill="#2563eb" stroke="#ffffff" stroke-width="2"/><circle cx="12" cy="12" r="4.5" fill="#ffffff"/></svg>`,
+                iconSize: [28, 42],
+                iconAnchor: [14, 42]
+            });
+            let marker = L.marker([defaultLat, defaultLng], {draggable: true, icon: pinIcon}).addTo(map);
 
             // Update Livewire component when marker is dragged
             marker.on('dragend', function (e) {
